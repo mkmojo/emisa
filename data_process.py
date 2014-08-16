@@ -1,8 +1,60 @@
 import os
 import ast
 import sys
-import numpy
 import matplotlib.pyplot as plt
+
+def save(path, ext='png', close=True, verbose=True):
+    """Save a figure from pyplot.
+
+    Parameters
+    ----------
+    path : string
+        The path (and filename, without the extension) to save the
+        figure to.
+
+    ext : string (default='png')
+        The file extension. This must be supported by the active
+        matplotlib backend (see matplotlib.backends module).  Most
+        backends support 'png', 'pdf', 'ps', 'eps', and 'svg'.
+
+    close : boolean (default=True)
+        Whether to close the figure after saving.  If you want to save
+        the figure multiple times (e.g., to multiple formats), you
+        should NOT close it in between saves or you will have to
+        re-plot it.
+
+    verbose : boolean (default=True)
+        Whether to print information about when and where the image
+        has been saved.
+
+    """
+
+    # Extract the directory and filename from the given path
+    directory = os.path.split(path)[0]
+    filename = "%s.%s" % (os.path.split(path)[1], ext)
+    if directory == '':
+        directory = '.'
+
+    # If the directory does not exist, create it
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+
+    # The final path to save to
+    savepath = os.path.join(directory, filename)
+
+    if verbose:
+        print("Saving figure to '%s'..." % savepath),
+
+    # Actually save the figure
+    plt.savefig(savepath)
+
+    # Close it
+    if close:
+        plt.close()
+
+    if verbose:
+        print("Done")
+
 
 
 def parse_inputfile(input_filename):
@@ -28,7 +80,7 @@ def parse_inputfile(input_filename):
     return journal_ids
 
 
-def draw_chart(intput_list):
+def draw_chart(intput_list, dist_filename):
     x = list()
     y = list()
     for item in intput_list:
@@ -36,7 +88,8 @@ def draw_chart(intput_list):
         y.append(item[1])
     plt.plot(x, y, 'o')
     plt.axis([min(x) - 10, max(x) + 10, min(y), max(y) + 0.1])
-    plt.show()
+    save(dist_filename, ext='png', close=True, verbose=True)
+    plt.close()
 
 
 #dist is a dictionary
@@ -49,6 +102,7 @@ def save_distribution(dist, dist_filename):
     with open(dist_filename, 'w') as fhand:
         for item in t:
             fhand.write(str(item[0]) + " " + str(item[1]) + "\n")
+    draw_chart(t, dist_filename)
 
 
 def do_data_process(wanted_journal_ids):
