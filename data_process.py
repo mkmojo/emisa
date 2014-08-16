@@ -93,9 +93,11 @@ def draw_chart(intput_list, dist_filename):
 
 
 #dist is a dictionary
-def save_distribution(dist, dist_filename):
+def save_distribution(year, dist, dist_filename):
     t = []
     for key, val in dist.items():
+        if key == "CURR":
+            key = int(year)
         t.append((int(key), val))
     t.sort()
 
@@ -191,8 +193,10 @@ def main():
 
     #save distributions
     for item in distributions:
-        dist_filename = "dist_" + str(item[0]) + ".dist"
-        save_distribution(item[1], dist_filename)
+        year = item[0]
+        distribution = item[1]
+        dist_filename = "dist_" + str(year) + ".dist"
+        save_distribution(year, distribution, dist_filename)
 
 if __name__ == "__main__":
     main()
