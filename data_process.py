@@ -276,6 +276,8 @@ def save_total_cites_per_paper_over_time(prefix, wanted_journal_ids):
                 #save graph to disk
                 lst = []
                 for key, val in counter.items():
+                    if key == "CURR":
+                        key = year
                     lst.append((int(key), val))
                 lst.sort()
                 draw_chart(lst, parent_paper_id, prefix + "/images" +"/" + file_name)
@@ -328,7 +330,6 @@ def main():
     #save total number of citations each year to file
     save_num_citations(prefix="results/step5", filename= \
         "total_citation.txt", num_totals=num_citations)
-
 
 if __name__ == "__main__":
     main()
