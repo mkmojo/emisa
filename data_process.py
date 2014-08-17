@@ -80,7 +80,7 @@ def parse_inputfile(input_filename):
     return journal_ids
 
 
-def draw_chart(intput_list, dist_filename):
+def draw_chart(intput_list, dist_filename, prefix):
     x = list()
     y = list()
     for item in intput_list:
@@ -88,12 +88,12 @@ def draw_chart(intput_list, dist_filename):
         y.append(item[1])
     plt.plot(x, y, 'o')
     plt.axis([min(x) - 10, max(x) + 10, min(y), max(y) + 0.1])
-    save(dist_filename, ext='png', close=True, verbose=True)
+    save(os.path.join(prefix, dist_filename), ext='png', close=True, verbose=True)
     plt.close()
 
 
 #dist is a dictionary
-def save_distribution(year, dist, dist_filename):
+def save_distribution(year, dist, dist_filename, prefix):
     t = []
     for key, val in dist.items():
         if key == "CURR":
@@ -101,10 +101,14 @@ def save_distribution(year, dist, dist_filename):
         t.append((int(key), val))
     t.sort()
 
-    with open(dist_filename, 'w') as fhand:
+    dist_file_path = os.path.join(prefix + "/src", dist_filename)
+    if not os.path.exists(os.path.dirname(dist_file_path)):
+        os.makedirs(os.path.dirname(dist_file_path))
+    with open(dist_file_path, 'w') as fhand:
         for item in t:
             fhand.write(str(item[0]) + " " + str(item[1]) + "\n")
-    draw_chart(t, dist_filename)
+
+    draw_chart(t, dist_filename, prefix + "/images")
 
 
 def do_data_process(wanted_journal_ids):
@@ -196,7 +200,9 @@ def main():
         year = item[0]
         distribution = item[1]
         dist_filename = "dist_" + str(year) + ".dist"
-        save_distribution(year, distribution, dist_filename)
+        save_distribution(year, distribution, dist_filename, "results/dist")
+
+    #save total number of
 
 if __name__ == "__main__":
     main()
