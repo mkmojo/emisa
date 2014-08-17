@@ -165,6 +165,7 @@ def do_data_process(wanted_journal_ids):
             print "Close fail:", file_name
 
 
+        #total number of citation for that year
         num_citation = sum(children_paper_counts.values())
         for key, val in children_paper_counts.items():
             distribution[key] = float(val) / num_citation
@@ -182,7 +183,7 @@ def do_data_process(wanted_journal_ids):
     return distributions, num_totals, num_wanteds, num_citations
 
 def save_num_totals(prefix, filename, num_totals):
-    file_path = os.path.join(os.getcwd(), prefix, filename)
+    file_path = os.path.join(os.getcwd(), prefix + "/src", filename)
     if not os.path.exists(os.path.dirname(file_path)):
         os.makedirs(os.path.dirname(file_path))
     with open(file_path, 'w') as fhand:
@@ -190,7 +191,33 @@ def save_num_totals(prefix, filename, num_totals):
         for item in num_totals:
             year = item[0]
             val = item[1]
-            fhand.write(str(year) + " " +  str(val) + "\n")
+            fhand.write(str(year) + " " + str(val) + "\n")
+    draw_chart(num_totals, filename, prefix + "/images")
+
+def save_num_wanteds(prefix, filename, num_totals):
+    file_path = os.path.join(os.getcwd(), prefix + "/src", filename)
+    if not os.path.exists(os.path.dirname(file_path)):
+        os.makedirs(os.path.dirname(file_path))
+    with open(file_path, 'w') as fhand:
+        num_totals.sort()
+        for item in num_totals:
+            year = item[0]
+            val = item[1]
+            fhand.write(str(year) + " " + str(val) + "\n")
+    draw_chart(num_totals, filename, prefix + "/images")
+
+
+def save_num_citations(prefix, filename, num_totals):
+    file_path = os.path.join(os.getcwd(), prefix + "/src", filename)
+    if not os.path.exists(os.path.dirname(file_path)):
+        os.makedirs(os.path.dirname(file_path))
+    with open(file_path, 'w') as fhand:
+        num_totals.sort()
+        for item in num_totals:
+            year = item[0]
+            val = item[1]
+            fhand.write(str(year) + " " + str(val) + "\n")
+    draw_chart(num_totals, filename, prefix + "/images")
 
 
 def main():
@@ -212,9 +239,17 @@ def main():
         dist_filename = "dist_" + str(year) + ".dist"
         save_distribution(year, distribution, dist_filename, "results/dist")
 
-    #save total number of citation to folder
-    save_num_totals(prefix = "results/num_totals", filename = \
-        "total_citation_number", num_totals=num_totals)
+    #save total number of papers each year to file
+    save_num_totals(prefix = "results/num_papers", filename = \
+        "total_paper.count", num_totals=num_totals)
+
+    #save total number of eco papers each year to file
+    save_num_wanteds(prefix = "results/num_eco", filename = \
+        "total_eco_citation.count", num_totals=num_wanteds)
+
+    #save total number of citations each year to file
+    save_num_citations(prefix = "results/num_citations", filename = \
+        "total_citation.count", num_totals=num_citations)
 
 if __name__ == "__main__":
     main()
