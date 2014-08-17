@@ -4,7 +4,7 @@ import sys
 import matplotlib.pyplot as plt
 
 
-def save(path, ext='png', close=True, verbose=True):
+def save(path, ext='png', close=True, verbose=False):
     """Save a figure from pyplot.
 
     Parameters
@@ -88,7 +88,7 @@ def draw_chart(intput_list, dist_filename, prefix):
         y.append(item[1])
     plt.plot(x, y, 'o')
     plt.axis([min(x) - 10, max(x) + 10, 0, max(y) + 0.1])
-    save(os.path.join(prefix, dist_filename), ext='png', close=True, verbose=True)
+    save(os.path.join(prefix, dist_filename), ext='png', close=True, verbose=False)
     plt.close()
 
 
@@ -166,6 +166,7 @@ def do_data_process(wanted_journal_ids):
 
         #total number of citation for that year
         num_children_total_citation = sum(children_paper_counts.values())
+        print num_children_total_citation
         for key, val in children_paper_counts.items():
             distribution[key] = float(val) / num_wanted
 
@@ -314,22 +315,22 @@ def main():
         year = item[0]
         distribution = item[1]
         dist_filename = "dist_" + str(year) + ".dist"
-        save_distribution(year, distribution, dist_filename, "results/step1")
+        save_distribution(year, distribution, dist_filename, "results/eco/step1")
 
     #save ratio of total_eco_paper/totol_all_paper to file
-    save_num_ratio(prefix="results/step2", filename= \
+    save_num_ratio(prefix="results/eco/step2", filename= \
         "ratio.txt", num_totals=ratios)
 
     #save total number parents papers each year to file
-    save_num_totals(prefix="results/step3", filename= \
+    save_num_totals(prefix="results/eco/step3", filename= \
         "total_paper.txt", num_totals=num_totals)
 
     #save total number of citations each year to file
-    save_num_citations(prefix="results/step5", filename= \
+    save_num_citations(prefix="results/eco/step5", filename= \
         "total_citation.txt", num_totals=num_citations)
 
     #save total cites per parent paper over time
-    save_total_cites_per_paper_over_time(prefix="results/step4", wanted_journal_ids=wanted_journal_ids)
+    #save_total_cites_per_paper_over_time(prefix="results/eco/step4", wanted_journal_ids=wanted_journal_ids)
 
 
 if __name__ == "__main__":
