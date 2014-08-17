@@ -324,12 +324,13 @@ def main():
     save_num_totals(prefix="results/step3", filename= \
         "total_paper.txt", num_totals=num_totals)
 
-    #save total cites per parent paper over time
-    save_total_cites_per_paper_over_time(prefix="results/step4", wanted_journal_ids=wanted_journal_ids)
-
     #save total number of citations each year to file
     save_num_citations(prefix="results/step5", filename= \
         "total_citation.txt", num_totals=num_citations)
+
+    #save total cites per parent paper over time
+    save_total_cites_per_paper_over_time(prefix="results/step4", wanted_journal_ids=wanted_journal_ids)
+
 
 if __name__ == "__main__":
     main()
