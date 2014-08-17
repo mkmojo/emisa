@@ -179,8 +179,18 @@ def do_data_process(wanted_journal_ids):
         num_totals.append((int(year), num_total))
         num_wanteds.append((int(year), num_wanted))
         num_citations.append((int(year), num_citation))
-
     return distributions, num_totals, num_wanteds, num_citations
+
+def save_num_totals(prefix, filename, num_totals):
+    file_path = os.path.join(os.getcwd(), prefix, filename)
+    if not os.path.exists(os.path.dirname(file_path)):
+        os.makedirs(os.path.dirname(file_path))
+    with open(file_path, 'w') as fhand:
+        num_totals.sort()
+        for item in num_totals:
+            year = item[0]
+            val = item[1]
+            fhand.write(str(year) + " " +  str(val) + "\n")
 
 
 def main():
@@ -202,7 +212,9 @@ def main():
         dist_filename = "dist_" + str(year) + ".dist"
         save_distribution(year, distribution, dist_filename, "results/dist")
 
-    #save total number of
+    #save total number of citation to folder
+    save_num_totals(prefix = "results/num_totals", filename = \
+        "total_citation_number", num_totals=num_totals)
 
 if __name__ == "__main__":
     main()
