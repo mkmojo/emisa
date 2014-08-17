@@ -65,7 +65,7 @@ def draw_chart(intput_list, dist_filename, prefix):
         y.append(item[1])
     plt.plot(x, y, 'o')
     plt.axis([min(x) - 10, max(x) + 10, 0, max(y) + 0.1])
-    save(os.path.join(prefix, dist_filename), ext='png', close=True, verbose=False)
+    save(os.path.join(prefix, dist_filename), ext='png', close=True, verbose=True)
     plt.close()
 
 def parse_inputfile(input_filename):
