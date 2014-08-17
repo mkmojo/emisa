@@ -219,6 +219,27 @@ def save_num_citations(prefix, filename, num_totals):
             fhand.write(str(year) + " " + str(val) + "\n")
     draw_chart(num_totals, filename, prefix + "/images")
 
+def save_num_ratio(prefix, filename, num_totals):
+    file_path = os.path.join(os.getcwd(), prefix + "/src", filename)
+    if not os.path.exists(os.path.dirname(file_path)):
+        os.makedirs(os.path.dirname(file_path))
+    with open(file_path, 'w') as fhand:
+        num_totals.sort()
+        for item in num_totals:
+            year = item[0]
+            val = item[1]
+            fhand.write(str(year) + " " + str(val) + "\n")
+    draw_chart(num_totals, filename, prefix + "/images")
+
+def calculate_ratio(num_wanteds, num_totals):
+    assert len(num_wanteds) == len(num_totals)
+    num_wanteds.sort()
+    num_totals.sort()
+    ratio = []
+    for i in xrange(len(num_wanteds)):
+        assert num_wanteds[i][0] == num_totals[i][0]
+        ratio.append((num_wanteds[i][0] ,float(num_wanteds[i][1]) / num_totals[i][1]))
+    return ratio
 
 def main():
     if len(sys.argv) < 2:
@@ -232,6 +253,8 @@ def main():
     print "Start counting:.."
     distributions, num_totals, num_wanteds, num_citations = do_data_process(wanted_journal_ids)
 
+    ratios = calculate_ratio(num_wanteds, num_totals)
+
     #save distributions
     for item in distributions:
         year = item[0]
@@ -240,16 +263,20 @@ def main():
         save_distribution(year, distribution, dist_filename, "results/dist")
 
     #save total number of papers each year to file
-    save_num_totals(prefix = "results/num_papers", filename = \
+    save_num_totals(prefix = "results/num_total_papers", filename = \
         "total_paper.count", num_totals=num_totals)
 
     #save total number of eco papers each year to file
-    save_num_wanteds(prefix = "results/num_eco", filename = \
+    save_num_wanteds(prefix = "results/num_eco_papers", filename = \
         "total_eco_citation.count", num_totals=num_wanteds)
 
     #save total number of citations each year to file
     save_num_citations(prefix = "results/num_citations", filename = \
         "total_citation.count", num_totals=num_citations)
+
+    #save ratio of total_eco_paper/totol_all_paper to file
+    save_num_ratio(prefix = "results/ratio", filename = \
+        "ratio.count", num_totals=ratios)
 
 if __name__ == "__main__":
     main()
