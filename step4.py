@@ -5,7 +5,7 @@ import ast
 import sys
 import matplotlib.pyplot as plt
 
-def save(path, ext='png', close=True, verbose=False):
+def save(path, ext='png', close=True, verbose=True):
     """Save a figure from pyplot.
 
     Parameters
@@ -124,7 +124,6 @@ def parallel_save_total_cites_per_paper_over_time(file_name, prefix, wanted_jour
             lst.sort()
             draw_chart(lst, parent_paper_id, prefix + "/images" +"/" + file_name)
 
-
             #save src file to disk
             file_path = os.path.join(os.getcwd(), prefix + "/src", file_name, parent_paper_id)
             if not os.path.exists(os.path.dirname(file_path)):
@@ -147,8 +146,8 @@ def main():
 
     infile = sys.argv[2]
     #save total cites per parent paper over time
-    parallel_save_total_cites_per_paper_over_time(infile, prefix="results/eco/step4", wanted_journal_ids=wanted_journal_ids)
-
+    parallel_save_total_cites_per_paper_over_time(file_name=infile, prefix="results/eco/step4", \
+                                                  wanted_journal_ids=wanted_journal_ids)
 
 if __name__ == "__main__":
     main()

@@ -4,7 +4,7 @@ import sys
 import matplotlib.pyplot as plt
 
 
-def save(path, ext='png', close=True, verbose=False):
+def save(path, ext='png', close=True, verbose=True):
     """Save a figure from pyplot.
 
     Parameters
