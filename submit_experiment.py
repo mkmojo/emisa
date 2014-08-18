@@ -37,6 +37,8 @@ def create_new_script(file_path, mem_per_core, script, script_args):
             "#SBATCH --mail-type end\n" + \
             "#SBATCH --mail-user qiuqiyuan@gmail.com\n")
 
+    f.write("module load numpy\n")
+    f.write("module load matplotlib\n")
     f.write("cd ..\n")
     f.write("python " + script +" "+script_args + "\n")
     f.close()
