@@ -2,7 +2,7 @@ import os
 import ast
 import sys
 import matplotlib.pyplot as plt
-eco_only = Flase
+eco_only = False
 
 def save(path, ext='png', close=True, verbose=True):
     """Save a figure from pyplot.
@@ -266,26 +266,46 @@ def main():
 
     ratios = calculate_ratio(num_wanteds, num_totals)
 
-    #save distributions
-    for item in distributions:
-        year = item[0]
-        distribution = item[1]
-        dist_filename = "dist_" + str(year) + ".dist"
-        save_distribution(year, distribution, dist_filename, "results/eco/step1")
 
-    #save ratio of total_eco_paper/totol_all_paper to file
-    save_num_ratio(prefix="results/eco/step2", filename= \
-        "ratio.txt", num_totals=ratios)
 
-    #save total number parents papers each year to file
-    save_num_totals(prefix="results/eco/step3", filename= \
-        "total_paper.txt", num_totals=num_totals)
+    if eco_only:
+        #save distributions
+        for item in distributions:
+            year = item[0]
+            distribution = item[1]
+            dist_filename = "dist_" + str(year) + ".dist"
+            save_distribution(year, distribution, dist_filename, "results/eco/step1")
 
-    #save total number of citations each year to file
-    save_num_citations(prefix="results/eco/step5", filename= \
-        "total_citation.txt", num_totals=num_citations)
+        #save ratio of total_eco_paper/totol_all_paper to file
+        save_num_ratio(prefix="results/eco/step2", filename= \
+            "ratio.txt", num_totals=ratios)
 
-    #save total cites per parent paper over time
+        #save total number parents papers each year to file
+        save_num_totals(prefix="results/eco/step3", filename= \
+            "total_paper.txt", num_totals=num_totals)
+
+        #save total number of citations each year to file
+        save_num_citations(prefix="results/eco/step5", filename= \
+            "total_citation.txt", num_totals=num_citations)
+    else:
+        #save distributions
+        for item in distributions:
+            year = item[0]
+            distribution = item[1]
+            dist_filename = "dist_" + str(year) + ".dist"
+            save_distribution(year, distribution, dist_filename, "results/all/step1")
+
+        #save ratio of total_eco_paper/totol_all_paper to file
+        save_num_ratio(prefix="results/all/step2", filename= \
+            "ratio.txt", num_totals=ratios)
+
+        #save total number parents papers each year to file
+        save_num_totals(prefix="results/all/step3", filename= \
+            "total_paper.txt", num_totals=num_totals)
+
+        #save total number of citations each year to file
+        save_num_citations(prefix="results/all/step5", filename= \
+            "total_citation.txt", num_totals=num_citations)
 
 if __name__ == "__main__":
     main()

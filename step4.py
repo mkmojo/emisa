@@ -152,9 +152,14 @@ def main():
     print "journal_ids:", ', '.join(wanted_journal_ids)
 
     infile = sys.argv[2]
-    #save total cites per parent paper over time
-    parallel_save_total_cites_per_paper_over_time(file_name=infile, prefix="results/eco/step4", \
-                                                  wanted_journal_ids=wanted_journal_ids)
+    if eco_only:
+        #save total cites per parent paper over time
+        parallel_save_total_cites_per_paper_over_time(file_name=infile, prefix="results/eco/step4", \
+                                                      wanted_journal_ids=wanted_journal_ids)
+    else:
+        parallel_save_total_cites_per_paper_over_time(file_name=infile, prefix="results/all/step4", \
+                                                      wanted_journal_ids=wanted_journal_ids)
+
 
 if __name__ == "__main__":
     main()
