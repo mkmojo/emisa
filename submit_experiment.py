@@ -38,7 +38,7 @@ def create_new_script(file_path, mem_per_core, script, script_args):
             "#SBATCH --mail-user qiuqiyuan@gmail.com\n")
 
     f.write("cd ..\n")
-    f.write(script +" "+script_args + "\n")
+    f.write("python " + script +" "+script_args + "\n")
     f.close()
 
 
