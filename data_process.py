@@ -97,8 +97,6 @@ def save_distribution(year, dist, dist_filename, prefix):
     t = []
     for key, val in dist.items():
         try:
-            if key == "CURR":
-                key = year
             t.append((int(key), val))
         except:
             continue

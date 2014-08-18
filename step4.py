@@ -121,8 +121,6 @@ def parallel_save_total_cites_per_paper_over_time(file_name, prefix, wanted_jour
             lst = []
             for key, val in counter.items():
                 try:
-                    if key == "CURR":
-                        key = year
                     lst.append((int(key), val))
                 except:
                     continue
