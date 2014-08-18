@@ -1,4 +1,5 @@
 __author__ = 'qqy'
+eco_only = False
 
 import os
 import ast
@@ -109,7 +110,8 @@ def parallel_save_total_cites_per_paper_over_time(file_name, prefix, wanted_jour
 
             #Ignore those that are not listed papers
             #Chose eco_papers
-            if journal_id not in wanted_journal_ids: continue
+            if eco_only:
+                if journal_id not in wanted_journal_ids: continue
 
             counter = ast.literal_eval(counter)
             #pretend that data point does not even show up in the dataset
@@ -139,6 +141,11 @@ def main():
     if len(sys.argv) < 2:
         print "Example: python plot.py eco_journal_ids.txt cite_ref1993.txt"
         sys.exit()
+
+    if eco_only:
+        print "This run is for eco papers only"
+    else:
+        print "This run is for all papers"
 
     #parse input file
     wanted_journal_ids = parse_inputfile(sys.argv[1])

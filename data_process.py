@@ -2,7 +2,7 @@ import os
 import ast
 import sys
 import matplotlib.pyplot as plt
-
+eco_only = Flase
 
 def save(path, ext='png', close=True, verbose=True):
     """Save a figure from pyplot.
@@ -148,7 +148,8 @@ def do_data_process(wanted_journal_ids):
 
             #Ignore those that are not listed papers
             #Chose eco_papers
-            if journal_id not in wanted_journal_ids: continue
+            if eco_only:
+                if journal_id not in wanted_journal_ids: continue
 
             counter = ast.literal_eval(counter)
             #pretend that data point does not even show up in the dataset
@@ -246,60 +247,15 @@ def calculate_ratio(num_wanteds, num_totals):
     return ratio
 
 
-def save_total_cites_per_paper_over_time(prefix, wanted_journal_ids):
-    files = os.listdir(os.getcwd())
-    for file_name in files:
-        if not (file_name[len(file_name) - 4:] == ".txt" and file_name.startswith("cite")): continue
-
-        with open(file_name, 'r') as fhand:
-            for line in fhand:
-
-                if line.startswith("year"): continue
-
-                #extract counter ends
-                atpos = line.find("Counter")
-                line_fst_hlf = line[:atpos].split()
-                counter_start = atpos + len("Counter") + 1
-                counter_end = line.find(")", counter_start)
-
-                year, journal_id, parent_paper_id, counter = line_fst_hlf[0], line_fst_hlf[1], \
-                                                             line[(atpos - 16):(atpos - 1)],  \
-                                                             line[counter_start:counter_end]
-
-                #Ignore those that are not listed papers
-                #Chose eco_papers
-                if journal_id not in wanted_journal_ids: continue
-
-                counter = ast.literal_eval(counter)
-                #pretend that data point does not even show up in the dataset
-                if "NULL" in counter.keys(): continue
-
-                #save graph to disk
-                lst = []
-                for key, val in counter.items():
-                    if key == "CURR":
-                        key = year
-                    lst.append((int(key), val))
-                lst.sort()
-                draw_chart(lst, parent_paper_id, prefix + "/images" +"/" + file_name)
-
-
-                #save src file to disk
-                file_path = os.path.join(os.getcwd(), prefix + "/src", file_name, parent_paper_id)
-                if not os.path.exists(os.path.dirname(file_path)):
-                    os.makedirs(os.path.dirname(file_path))
-                with open(file_path, 'w') as out_fhand:
-                    for item in lst:
-                        x = item[0]
-                        y = item[1]
-                        out_fhand.write(str(x) + ' ' + str(y) + '\n')
-
-
-
 def main():
     if len(sys.argv) < 2:
         print "Example: python plot.py eco_journal_ids.txt"
         sys.exit()
+
+    if eco_only:
+        print "This run is for eco papers only"
+    else:
+        print "This run is for all papers"
 
     #parse input file
     wanted_journal_ids = parse_inputfile(sys.argv[1])
@@ -330,8 +286,6 @@ def main():
         "total_citation.txt", num_totals=num_citations)
 
     #save total cites per parent paper over time
-    #save_total_cites_per_paper_over_time(prefix="results/eco/step4", wanted_journal_ids=wanted_journal_ids)
-
 
 if __name__ == "__main__":
     main()
