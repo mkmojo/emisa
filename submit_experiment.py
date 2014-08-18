@@ -77,7 +77,7 @@ def main():
                 file_path = os.path.join(os.getcwd(), dir_name, infile+".sh")
                 print "file_path", file_path
                 # print "new_script name: " + dir_path
-                create_new_script(file_path, "2GB", script, "eco_journal_ids.txt"+infile)
+                create_new_script(file_path, "2GB", script, "eco_journal_ids.txt "+infile)
                 print file_path + " created"
         exit(0)
 
