@@ -87,8 +87,11 @@ def main():
             dir_path = os.path.join(owd, dir_name)
             print dir_path
             os.chdir(dir_path)
-            print "submit task"
-            os.system("sbatch *.sh")
+            files = os.listdir(dir_path)
+            for f in files:
+                if not f.endswith(".sh"): continue
+                print "submit task:", f
+                os.system("sbatch " + f)
             os.chdir(owd)
         exit(1)
 
