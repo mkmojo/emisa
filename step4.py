@@ -120,9 +120,12 @@ def parallel_save_total_cites_per_paper_over_time(file_name, prefix, wanted_jour
             #save graph to disk
             lst = []
             for key, val in counter.items():
-                if key == "CURR":
-                    key = year
-                lst.append((int(key), val))
+                try:
+                    if key == "CURR":
+                        key = year
+                    lst.append((int(key), val))
+                except:
+                    continue
             lst.sort()
             draw_chart(lst, parent_paper_id, prefix + "/images" +"/" + file_name)
 

@@ -96,9 +96,12 @@ def draw_chart(intput_list, dist_filename, prefix):
 def save_distribution(year, dist, dist_filename, prefix):
     t = []
     for key, val in dist.items():
-        if key == "CURR":
-            key = int(year)
-        t.append((int(key), val))
+        try:
+            if key == "CURR":
+                key = year
+            t.append((int(key), val))
+        except:
+            continue
     t.sort()
 
     dist_file_path = os.path.join(prefix + "/src", dist_filename)
