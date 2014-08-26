@@ -136,7 +136,6 @@ def do_data_process(wanted_journal_ids):
         for line in fhand:
             #skip first line
             if line.startswith("year"): continue
-            num_total += 1
 
             #extract counter ends
             atpos = line.find("Counter")
@@ -151,6 +150,7 @@ def do_data_process(wanted_journal_ids):
             #Chose eco_papers
             if eco_only:
                 if journal_id not in wanted_journal_ids: continue
+            num_total += 1
 
             counter = ast.literal_eval(counter)
             #pretend that data point does not even show up in the dataset
