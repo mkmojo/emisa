@@ -2,7 +2,7 @@ import os
 import ast
 import sys
 import matplotlib.pyplot as plt
-eco_only = True
+eco_only = False
 
 def save(path, ext='png', close=True, verbose=True):
     """Save a figure from pyplot.
@@ -155,14 +155,18 @@ def do_data_process(wanted_journal_ids):
             for key, val in counter.items():
                 children_paper_counts[key] = children_paper_counts.get(key, 0) + val
 
-            num_total += 1
-
-            #Ignore those that are not listed papers
-            #Chose eco_papers
             if eco_only:
-                if journal_id not in wanted_journal_ids: continue
-
-            num_wanted += 1
+                if journal_id not in wanted_journal_ids:
+                    continue
+                else:
+                    num_total += 1
+                    num_wanted += 1
+            else:
+                #for all paper case
+                num_total += 1
+                if journal_id in wanted_journal_ids:
+                    num_wanted += 1
+                
         try:
             fhand.close()
         except:
