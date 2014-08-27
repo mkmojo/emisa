@@ -2,7 +2,7 @@ import os
 import ast
 import sys
 import matplotlib.pyplot as plt
-eco_only = False
+eco_only = True
 
 def save(path, ext='png', close=True, verbose=True):
     """Save a figure from pyplot.
