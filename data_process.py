@@ -146,12 +146,7 @@ def do_data_process(wanted_journal_ids):
             year, journal_id, counter = line_fst_hlf[0], line_fst_hlf[1], \
                                         line[counter_start:counter_end]
 
-            #Ignore those that are not listed papers
-            #Chose eco_papers
-            if eco_only:
-                if journal_id not in wanted_journal_ids: continue
-                num_total += 1
-
+            
             counter = ast.literal_eval(counter)
             #pretend that data point does not even show up in the dataset
             if "NULL" in counter.keys():
@@ -159,6 +154,13 @@ def do_data_process(wanted_journal_ids):
             #accumulate counters
             for key, val in counter.items():
                 children_paper_counts[key] = children_paper_counts.get(key, 0) + val
+
+            num_total += 1
+
+            #Ignore those that are not listed papers
+            #Chose eco_papers
+            if eco_only:
+                if journal_id not in wanted_journal_ids: continue
 
             num_wanted += 1
         try:
